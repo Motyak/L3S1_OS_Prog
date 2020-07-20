@@ -1,0 +1,76 @@
+Exercice 1 :
+
+Q1)
+#creation des répertoires (dans le dossier TP1)
+$mkdir src include obj bin
+
+#déplacement des fichiers dans les répertoires correspondants
+$mv *.c src/
+$mv Liste.h include/
+
+#compilation des fichiers sources vers le répertoire obj
+$gcc -c src/Liste.c -o obj/Liste.o
+$gcc -c src/main.c -o obj/main.o
+
+#construction du prog vers le répertoire bin
+$gcc obj/Liste.o obj/main.o -o bin/main
+
+
+Exercice 2 :
+
+Q3)
+(Répertoire actuel : 'TP1/..')
+#creation du répertoire libListe et de ses sous-répertoires
+$mkdir libListe libListe/src libListe/obj libListe/include libListe/lib
+
+#déplacement du répertoire TP1/include vers libListe/
+$mv TP1/include libListe/
+
+#déplacement des fichiers Liste.c et Liste.o
+$mv TP1/src/Liste.c libListe/src/
+$mv TP1/obj/Liste.o libListe/obj/
+
+#changer le chemin de l'include 'Liste.h' dans le fichier main.c
+$sed -i 's+../include/Liste.h+../../libListe/include/Liste.h+g' TP1/src/main.c
+
+#compilation des fichiers sources
+$rm libListe/obj/Liste.o TP1/obj/main.o
+$gcc -c libListe/src/Liste.c -o libListe/obj/Liste.o
+$gcc -c TP1/src/main.c -o TP1/obj/main.o
+
+#construction du prog vers le répertoire TP1/bin/
+$gcc libListe/obj/Liste.o TP1/obj/main.o -o TP1/bin/main
+
+#création de la librairie libListe.a
+$ar -crs libListe/lib/libListe.a libListe/obj/Liste.o
+
+
+Exercice 3
+
+Q4)
+#makefile librairie
+all: obj/Liste.o
+
+obj/Liste.o: src/Liste.c include/Liste.h
+	gcc -c $< -o $@
+
+clean:
+	rm -rf obj/Liste.o
+
+
+
+#makefile projet
+all: bin/main
+
+bin/main: ../libListe/obj/Liste.o obj/main.o
+	gcc $^ -o $@
+
+../libListe/obj/Liste.o: ../libListe/src/Liste.c ../libListe/include/Liste.h
+	$(CC) -c ../libListe/src/Liste.c -o ../libListe/obj/Liste.o
+
+obj/main.o: ../libListe/src/Liste.c ../libListe/include/Liste.h
+	$(CC) -c src/main.c -o obj/main.o
+
+clean:
+	rm -rf $(OBJ)
+

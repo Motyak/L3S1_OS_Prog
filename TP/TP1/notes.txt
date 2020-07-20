@@ -1,0 +1,23 @@
+Faire une map qui associe une Commande(char) à une fonction
+Faire dans un premier temps le controle de saisie (premier arg est un char
+	compris dans la liste des commandes définis au préalable),
+	puis on fait un  doIt qui prend en param la cmd
+
+
+
+TP1$_
+
+$rm /obj/*.o
+$gcc -c src/Liste.c -o obj/Liste.o
+$gcc -c src/main.c -o obj/main.o
+$gcc obj/Liste.o obj/main.o -o bin/main
+
+
+0)Lancement du programme
+1)Je demande un prompt de la commande
+2)Controle de saisie, le premier caractere du prompt appartient à la liste
+	de caracteres acceptées
+3)Selon le caractère saisie, on fait l'action appropriée.. (switch case ou suites de if)
+4)On boucle tant que le caractère n'est pas 'x'
+
+
